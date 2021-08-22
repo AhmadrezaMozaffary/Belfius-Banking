@@ -77,25 +77,6 @@ form {
     display: none;
 }
 
-.fadeinup {
-    animation: fadeinup 2s forwards ;
-
-}
-
-.fadeinleft {
-    animation: fadeindown 2s forwards ;
-}
-
-.fadeoutup{
-    animation: fadeoutup 2s forwards ;
-}
-
-.fadeoutdown {
-    animation: fadeoutdown 2s forwards ;
-
-}
-
-
 /* Custom CSS */
 .login-page{
     width: 100%;
@@ -107,10 +88,8 @@ form {
 }
 
 .login-form {
-    width: 30%;
-    /* mobile width 80% */
-    /* tablet width 50% height: 50vh */
-    height: 80vh;
+    width: 20%;
+    height: 60vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -118,7 +97,7 @@ form {
     border-radius: 15px;
     background: var(--form-bg);
     backdrop-filter: blur(10px);
-    box-shadow: inset 2px 2px 40px #000, 10px 10px 30px #000;
+    box-shadow:  15px 15px 25px #000;
 }
 
 .login-msg {
@@ -155,4 +134,16 @@ form {
     text-align:  center;
 }
 
+@media screen and (max-width: 425px) {
+    .login-form {
+        width: 80%;
+        height: 70vh;
+    }
+}
 
+@media screen and (min-width: 426px) and (max-width: 768px) {
+    .login-form{
+        width: 50%;
+        height: 50vh;
+    }
+}
