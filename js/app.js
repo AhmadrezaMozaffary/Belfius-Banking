@@ -46,7 +46,7 @@ const backBtn1 = document.querySelector(".back-btn1");
 const backBtn2 = document.querySelector(".back-btn2");
 const userPanel = document.querySelector(".panel");
 const logoutBtn = document.querySelector(".logout-btn");
-const transferBtn = document.querySelector(".transfer");
+const transferBtn = document.querySelector(".btn-tools");
 const inputID = document.querySelector(".input-id");
 const transferInputAmount = document.querySelector(".transfer-input-amount");
 const requestBtn = document.querySelector(".request");
@@ -83,9 +83,9 @@ const displayMovements = function (movements) {
   });
 };
 
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((temp, mov) => (temp += mov), 0);
-  totalBalance.textContent = `${balance} €`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((temp, mov) => (temp += mov), 0);
+  totalBalance.textContent = `${acc.balance} €`;
 };
 
 const calcDisplaySummary = function (acc) {
@@ -116,9 +116,9 @@ const accUsernames = function (accs) {
 };
 accUsernames(accounts);
 
-const displayUI = function (acc) {
+const updateUI = function (acc) {
   displayMovements(acc.movements);
-  calcDisplayBalance(acc.movements);
+  calcDisplayBalance(acc);
   calcDisplaySummary(acc);
 };
 
@@ -153,10 +153,29 @@ secondLoginBtn.addEventListener("click", () => {
     loginPage.classList.add("hidden");
     userPanel.classList.remove("hidden");
     usersName.textContent = `${currentAcc.owner.split(" ")[0]} 😊`;
-    displayUI(currentAcc);
+    updateUI(currentAcc);
   } else {
     inputUser.value = inputPass.value = "";
     alert("Username or Password is INCORRECT!");
+  }
+});
+
+transferBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  const reciverAcc = accounts.find((acc) => acc.username === inputID.value);
+  const amount = Number(transferInputAmount.value);
+  inputID.value = transferInputAmount.value = "";
+  if (
+    amount > 0 &&
+    reciverAcc &&
+    reciverAcc !== currentAcc &&
+    currentAcc.balance >= amount
+  ) {
+    currentAcc.movements.push(-amount);
+    reciverAcc.movements.push(amount);
+    updateUI(currentAcc);
+  } else {
+    alert("Wrong information!");
   }
 });
 
