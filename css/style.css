@@ -5,6 +5,11 @@
   --negative: rgba(255, 0, 0, 0.996);
 }
 
+::selection {
+  color: #fff;
+  background: var(--primary-color);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -123,19 +128,20 @@ form {
   font-size: 13px;
   background: var(--positive);
   color: #444;
-  padding: 3px;
+  padding: 5px;
   font-weight: bold;
   text-transform: uppercase;
   border-radius: 10px;
+  margin: 0 5px;
 }
-.withdrew {
+.withdraw {
+  margin: 0 5px;
   font-weight: bold;
   font-size: 13px;
   background: var(--negative);
   color: #fff;
-  padding: 0 2px;
   text-transform: uppercase;
-  padding: 3px;
+  padding: 5px;
   border-radius: 10px;
 }
 
@@ -257,6 +263,7 @@ form {
 .right-about {
   padding-top: 0.3em;
   padding-right: 1em;
+  font-size: 2.3em;
   color: var(--primary-color);
 }
 
@@ -307,6 +314,8 @@ form {
 }
 
 .n-money {
+  font-size: 1.3em;
+  margin-right: 10px;
   color: var(--primary-color);
   font-weight: bold;
 }
@@ -428,10 +437,12 @@ form {
   font-weight: bold;
   margin: 0 10% 0 3%;
   color: var(--positive);
+  -webkit-text-stroke: 0.5px purple;
 }
 
 p:nth-child(2) .sta-amount {
   color: var(--negative);
+  -webkit-text-stroke: 0;
 }
 
 .statistics-right p span {

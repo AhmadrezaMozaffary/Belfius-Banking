@@ -19,7 +19,7 @@
   </head>
   <body>
     <!-- LOGIN Page -->
-    <section class="login-page hidden">
+    <section class="login-page">
       <section class="login-form">
         <header class="login-header">
           <a href="#">
@@ -33,16 +33,18 @@
           <button class="btn btn-primary first-login-btn">Login</button>
           <button class="btn btn-secondary first-signup-btn">SignUp</button>
         </section>
+        <!-- LOGIN -->
         <section class="login hidden">
           <form>
-            <input type="text" placeholder="username" />
-            <input type="password" placeholder="password" />
+            <input type="text" placeholder="username" class="username" />
+            <input type="password" placeholder="password" class="pass" />
           </form>
           <section class="btn-container">
             <button class="btn btn-primary second-login-btn">Login</button>
             <button class="btn btn-secondary back-btn1">BACK</button>
           </section>
         </section>
+        <!-- SIGN UP -->
         <section class="signup hidden">
           <form>
             <input type="text" placeholder="name" />
@@ -58,11 +60,11 @@
       </section>
     </section>
     <!-- USER Panel -->
-    <section class="panel">
+    <section class="panel hidden">
       <!-- Panel Navbar -->
       <nav class="panel-nav">
         <div class="panel-inner-nav">
-          <button class="btn btn-primary">LOGOUT</button>
+          <button class="btn btn-primary logout-btn">LOGOUT</button>
           <div>
             <h3>Welcome, <span class="user-name">Name</span></h3>
           </div>
@@ -92,7 +94,7 @@
               <div class="his-content-left">
                 <p>
                   <span class="his-num">8 </span
-                  ><span class="kind-of-his withdrew">withdrew</span>
+                  ><span class="kind-of-his withdraw">withdraw</span>
                 </p>
                 <p class="his-date">2021/03/07</p>
               </div>
@@ -122,7 +124,7 @@
               <div class="his-content-left">
                 <p>
                   <span class="his-num">5 </span
-                  ><span class="kind-of-his withdrew">withdrew</span>
+                  ><span class="kind-of-his withdraw">withdraw</span>
                 </p>
                 <p class="his-date">2021/03/07</p>
               </div>
@@ -132,7 +134,7 @@
               <div class="his-content-left">
                 <p>
                   <span class="his-num">4 </span
-                  ><span class="kind-of-his withdrew">withdrew</span>
+                  ><span class="kind-of-his withdraw">withdraw</span>
                 </p>
                 <p class="his-date">2021/03/07</p>
               </div>
@@ -152,7 +154,7 @@
               <div class="his-content-left">
                 <p>
                   <span class="his-num">2 </span
-                  ><span class="kind-of-his withdrew">withdrew</span>
+                  ><span class="kind-of-his withdraw">withdraw</span>
                 </p>
                 <p class="his-date">2021/03/07</p>
               </div>
@@ -173,14 +175,14 @@
           <section class="panel-tools">
             <!-- TRANSFER MONEY -->
             <section class="tools transfer">
-              <form action="#">
+              <form>
                 <label for="transfer">Transfer Money</label>
                 <div>
                   <div>
                     <input
                       type="text"
                       name="id"
-                      class="input-tools"
+                      class="input-tools input-id"
                       placeholder="ID"
                     />
                   </div>
@@ -188,7 +190,7 @@
                     <input
                       type="number"
                       name="amount"
-                      class="input-tools"
+                      class="input-tools transfer-input-amount"
                       placeholder="Amount"
                     />
                   </div>
@@ -205,7 +207,7 @@
                     <input
                       type="number"
                       name="id"
-                      class="input-tools"
+                      class="input-tools req-input-amount"
                       placeholder="Amount"
                     />
                   </div>
@@ -222,7 +224,7 @@
                     <input
                       type="text"
                       name="user"
-                      class="input-tools"
+                      class="input-tools user-confirm"
                       placeholder="Confirm User"
                     />
                   </div>
@@ -230,7 +232,7 @@
                     <input
                       type="password"
                       name="pass"
-                      class="input-tools"
+                      class="input-tools pass-confirm"
                       placeholder="Confirm Pass"
                     />
                   </div>
@@ -245,9 +247,9 @@
         <section class="panel-statistics">
           <!-- STATISTICS LEFT -->
           <div class="statistics-left">
-            <p>in<span class="sta-amount">4,442 €</span></p>
-            <p>out<span class="sta-amount">1,900 €</span></p>
-            <p>interest<span class="sta-amount">1,221 €</span></p>
+            <p>in<span class="sta-amount income">4,442 €</span></p>
+            <p>out<span class="sta-amount out">1,900 €</span></p>
+            <p>interest<span class="sta-amount interest">1,221 €</span></p>
           </div>
 
           <!-- STATISTICS RIGHT -->
