@@ -193,6 +193,9 @@ logoutBtn.addEventListener("click", (e) => {
     userConfirmInput.value = passConfirmInput.value = "";
     userPanel.classList.add("hidden");
     loginPage.classList.remove("hidden");
+    logoutError.style.color = "black";
+    logoutError.style.textShadow = "none";
+    logoutError.textContent = "Close Account";
   } else {
     logoutError.style.color = "red";
     logoutError.style.textShadow = "0 0 2px white";
