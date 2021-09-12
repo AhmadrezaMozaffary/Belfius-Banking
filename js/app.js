@@ -54,6 +54,7 @@ const inputID = document.querySelector(".input-id");
 const transferInputAmount = document.querySelector(".transfer-input-amount");
 const transferBtn = document.querySelector(".btn-tools");
 
+const reqLoanError = document.querySelector(".loan-error");
 const reqInputAmount = document.querySelector(".req-input-amount");
 const requestBtn = document.querySelector(".request");
 
@@ -128,6 +129,12 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+const displayMsg = function (target, msg, msgColor, shadowColor = "white") {
+  target.style.color = msgColor;
+  target.style.textShadow = `0 0 2px ${shadowColor}`;
+  target.textContent = msg;
+};
+
 const backBtns = function () {
   loginSection.classList.add("hidden");
   signupSection.classList.add("hidden");
@@ -184,6 +191,27 @@ transferBtn.addEventListener("click", (e) => {
   }
 });
 
+requestBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  const amount = Number(reqInputAmount.value);
+  const loanRole = currentAcc.movements.some((mov) => mov >= amount * 0.1);
+  if (amount > 0 && loanRole) {
+    const msg = `Requested loan \" ${amount}€ \" Accepted!`;
+    displayMsg(reqLoanError, msg, "green"); //(4th parametr)Default text-shadow is WHITE
+    currentAcc.movements.push(amount);
+    updateUI(currentAcc);
+  } else if (!loanRole) {
+    const msg = "Requested loan is grater than 10%!";
+    displayMsg(reqLoanError, msg, "red", "yellow");
+    updateUI(currentAcc);
+  } else if (amount <= 0) {
+    const msg = "Enter your amount";
+    displayMsg(reqLoanError, msg, "red", "yellow");
+    updateUI(currentAcc);
+  }
+  reqInputAmount.value = "";
+});
+
 logoutBtn.addEventListener("click", (e) => {
   e.preventDefault();
   if (
@@ -193,12 +221,9 @@ logoutBtn.addEventListener("click", (e) => {
     userConfirmInput.value = passConfirmInput.value = "";
     userPanel.classList.add("hidden");
     loginPage.classList.remove("hidden");
-    logoutError.style.color = "black";
-    logoutError.style.textShadow = "none";
-    logoutError.textContent = "Close Account";
+    displayMsg(reqLoanError, "Request Loan", "black");
+    displayMsg(logoutError, "Close Account", "black");
   } else {
-    logoutError.style.color = "red";
-    logoutError.style.textShadow = "0 0 2px white";
-    logoutError.textContent = "Wrong User or Password!";
+    displayMsg(logoutError, "Wrong User or Password!", "red");
   }
 });
