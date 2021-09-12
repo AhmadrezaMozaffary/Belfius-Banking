@@ -64,7 +64,6 @@
       <!-- Panel Navbar -->
       <nav class="panel-nav">
         <div class="panel-inner-nav">
-          <button class="btn btn-primary logout-btn">LOGOUT</button>
           <div>
             <h3>Welcome, <span class="user-name">Name</span></h3>
           </div>
@@ -198,7 +197,7 @@
                 </div>
               </form>
             </section>
-            <!-- REQUEST MONEY -->
+            <!-- REQUEST LOAN -->
             <section class="tools request">
               <form action="#">
                 <label for="transfer">Request Loan</label>
@@ -218,7 +217,9 @@
             <!-- CONFIRM LOGOUT -->
             <section class="tools confirm-logout">
               <form action="#">
-                <label for="confirm-logout">Close Account</label>
+                <label for="confirm-logout" class="logout-error"
+                  >Close Account</label
+                >
                 <div>
                   <div>
                     <input
@@ -236,7 +237,9 @@
                       placeholder="Confirm Pass"
                     />
                   </div>
-                  <button type="submit" class="btn-tools">Close ✔️</button>
+                  <button type="submit" class="btn-tools logout-btn">
+                    Close ✔️
+                  </button>
                 </div>
               </form>
             </section>

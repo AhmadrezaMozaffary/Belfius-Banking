@@ -32,6 +32,8 @@ const account4 = {
 const accounts = [account1, account2, account3, account4];
 
 //Elements
+const inputUser = document.querySelector(".username");
+const inputPass = document.querySelector(".pass");
 const firstLoginBtn = document.querySelector(".first-login-btn");
 const firstSignupBtn = document.querySelector(".first-signup-btn");
 const secondLoginBtn = document.querySelector(".second-login-btn");
@@ -41,27 +43,31 @@ const loginPage = document.querySelector(".login-page");
 const loginSection = document.querySelector(".login");
 const loginHeader = document.querySelector(".loign-header");
 const loginMessage = document.querySelector(".in-msg");
-const btnContainer = document.querySelector(".btn-container");
 const backBtn1 = document.querySelector(".back-btn1");
 const backBtn2 = document.querySelector(".back-btn2");
+
 const userPanel = document.querySelector(".panel");
+const btnContainer = document.querySelector(".btn-container");
 const logoutBtn = document.querySelector(".logout-btn");
-const transferBtn = document.querySelector(".btn-tools");
+
 const inputID = document.querySelector(".input-id");
 const transferInputAmount = document.querySelector(".transfer-input-amount");
-const requestBtn = document.querySelector(".request");
+const transferBtn = document.querySelector(".btn-tools");
+
 const reqInputAmount = document.querySelector(".req-input-amount");
-const confirmBtn = document.querySelector(".confirm-logout");
+const requestBtn = document.querySelector(".request");
+
 const userConfirmInput = document.querySelector(".user-confirm");
 const passConfirmInput = document.querySelector(".pass-confirm");
+const logoutError = document.querySelector(".logout-error");
+const confirmBtn = document.querySelector(".confirm-logout");
+
 const movementsContainer = document.querySelector(".left-history");
+const usersName = document.querySelector(".user-name");
 const totalBalance = document.querySelector(".right-about");
 const lableIncome = document.querySelector(".income");
 const lableOut = document.querySelector(".out");
 const lableInterest = document.querySelector(".interest");
-const usersName = document.querySelector(".user-name");
-const inputUser = document.querySelector(".username");
-const inputPass = document.querySelector(".pass");
 
 const displayMovements = function (movements) {
   movementsContainer.innerHTML = "";
@@ -128,6 +134,8 @@ const backBtns = function () {
   btnContainer.classList.remove("hidden");
   loginMessage.textContent = "Log in ";
 };
+backBtn1.addEventListener("click", backBtns);
+backBtn2.addEventListener("click", backBtns);
 
 firstLoginBtn.addEventListener("click", () => {
   btnContainer.classList.toggle("hidden");
@@ -139,9 +147,6 @@ firstSignupBtn.addEventListener("click", () => {
   signupSection.classList.toggle("hidden");
   loginMessage.textContent = "Sign up ";
 });
-
-backBtn1.addEventListener("click", backBtns);
-backBtn2.addEventListener("click", backBtns);
 
 let currentAcc;
 secondLoginBtn.addEventListener("click", () => {
@@ -179,7 +184,18 @@ transferBtn.addEventListener("click", (e) => {
   }
 });
 
-logoutBtn.addEventListener("click", () => {
-  userPanel.classList.add("hidden");
-  loginPage.classList.remove("hidden");
+logoutBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (
+    userConfirmInput.value.toLowerCase() === currentAcc.username &&
+    Number(passConfirmInput.value) === currentAcc.pin
+  ) {
+    userConfirmInput.value = passConfirmInput.value = "";
+    userPanel.classList.add("hidden");
+    loginPage.classList.remove("hidden");
+  } else {
+    logoutError.style.color = "red";
+    logoutError.style.textShadow = "0 0 2px white";
+    logoutError.textContent = "Wrong User or Password!";
+  }
 });
