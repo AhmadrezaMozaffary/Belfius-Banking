@@ -450,6 +450,15 @@ p:nth-child(2) .sta-amount {
   font-size: 1.08em;
 }
 
+.statistics-left .sort-btn {
+  color: black;
+  font-size: 1.4em;
+}
+
+.statistics-left .sort-btn:hover {
+  opacity: 0.7;
+}
+
 /* Responsive */
 /* 1- MOBILE */
 @media screen and (max-width: 425px) {
@@ -537,6 +546,11 @@ p:nth-child(2) .sta-amount {
 
   .statistics-left p {
     width: 100%;
+    order: 1;
+  }
+
+  .statistics-left .sort-btn {
+    font-size: 1.9em;
   }
 
   .statistics-right {

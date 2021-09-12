@@ -69,10 +69,12 @@ const totalBalance = document.querySelector(".right-about");
 const lableIncome = document.querySelector(".income");
 const lableOut = document.querySelector(".out");
 const lableInterest = document.querySelector(".interest");
+const sortBtn = document.querySelector(".sort-btn");
 
-const displayMovements = function (movements) {
+const displayMovements = function (movements, sort = false) {
   movementsContainer.innerHTML = "";
-  movements.forEach((mov, i) => {
+  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  movs.forEach((mov, i) => {
     const type = mov > 0 ? "deposit" : "withdraw";
     const html = `
       <div class="left-history-content">
@@ -223,7 +225,20 @@ logoutBtn.addEventListener("click", (e) => {
     loginPage.classList.remove("hidden");
     displayMsg(reqLoanError, "Request Loan", "black");
     displayMsg(logoutError, "Close Account", "black");
+    sortBtn.style.color = "black";
   } else {
     displayMsg(logoutError, "Wrong User or Password!", "red");
+  }
+});
+
+let sorted = false;
+sortBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  displayMovements(currentAcc.movements, !sorted);
+  sorted = !sorted;
+  if (sorted) {
+    sortBtn.style.color = "green";
+  } else {
+    sortBtn.style.color = "black";
   }
 });
