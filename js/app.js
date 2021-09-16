@@ -85,7 +85,7 @@ const displayMovements = function (movements, sort = false) {
             </p>
             <p class="his-date">"DATE"</p>
           </div>
-          <p class="n-money">${mov}€</p>
+          <p class="n-money">${mov.toFixed(2)}€</p>
       </div>
     `;
     movementsContainer.insertAdjacentHTML("afterbegin", html);
@@ -94,7 +94,7 @@ const displayMovements = function (movements, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((temp, mov) => (temp += mov), 0);
-  totalBalance.textContent = `${acc.balance} €`;
+  totalBalance.textContent = `${acc.balance.toFixed(2)} €`;
 };
 
 const calcDisplaySummary = function (acc) {
@@ -109,9 +109,9 @@ const calcDisplaySummary = function (acc) {
     .map((deposit) => (deposit * acc.interestRate) / 100)
     .filter((int) => int >= 1)
     .reduce((temp, int) => (temp += int), 0);
-  lableIncome.textContent = `${income}€`;
-  lableOut.textContent = `${Math.abs(out)}€`;
-  lableInterest.textContent = `${interest}€`;
+  lableIncome.textContent = `${income.toFixed(2)}€`;
+  lableOut.textContent = `${out.toFixed(2)}€`;
+  lableInterest.textContent = `${interest.toFixed(2)}€`;
 };
 
 const accUsernames = function (accs) {
@@ -195,7 +195,7 @@ transferBtn.addEventListener("click", (e) => {
 
 requestBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  const amount = Number(reqInputAmount.value);
+  const amount = Math.floor(reqInputAmount.value);
   const loanRole = currentAcc.movements.some((mov) => mov >= amount * 0.1);
   if (amount > 0 && loanRole) {
     const msg = `Requested loan \" ${amount}€ \" Accepted!`;
