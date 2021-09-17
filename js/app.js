@@ -17,7 +17,7 @@ const account1 = {
   interestRate: 1.2, // %
   pin: 1111,
   currency: "EUR",
-  locale: "fa-IR",
+  locale: "en-US",
 };
 
 const account2 = {
@@ -55,7 +55,7 @@ const account3 = {
   interestRate: 0.7,
   pin: 3333,
   currency: "USD",
-  locale: "en-US",
+  locale: "fa-IR",
 };
 
 const account4 = {
@@ -96,7 +96,6 @@ const btnContainer = document.querySelector(".btn-container");
 const logoutBtn = document.querySelector(".logout-btn");
 
 const lableDate = document.querySelector(".date");
-const lableTime = document.querySelector(".time");
 
 const inputID = document.querySelector(".input-id");
 const transferInputAmount = document.querySelector(".transfer-input-amount");
@@ -119,7 +118,7 @@ const lableOut = document.querySelector(".out");
 const lableInterest = document.querySelector(".interest");
 const sortBtn = document.querySelector(".sort-btn");
 
-const calcDisplayMovDays = function (date) {
+const calcDisplayMovDays = function (date, locale) {
   const calcPassedDays = (day1, day2) =>
     Math.round(Math.abs(day1 - day2) / (1000 * 60 * 60 * 24));
   const passedDays = calcPassedDays(new Date(), date);
@@ -127,10 +126,7 @@ const calcDisplayMovDays = function (date) {
   else if (passedDays === 1) return "Yesterday";
   else if (passedDays <= 7) return `${passedDays} days ago`;
   else {
-    const year = date.getFullYear();
-    const month = `${date.getMonth() + 1}`.padStart(2, 0);
-    const day = `${date.getDate()}`.padStart(2, 0);
-    return `${year}/${month}/${day}`;
+    return Intl.DateTimeFormat(locale).format(date);
   }
 };
 
@@ -144,7 +140,7 @@ const displayMovements = function (acc, sort = false) {
 
     //Display movement's date
     const movTime = new Date(acc.movementsDates[i]);
-    const displayMovTime = calcDisplayMovDays(movTime);
+    const displayMovTime = calcDisplayMovDays(movTime, acc.locale);
 
     const html = `
       <div class="left-history-content">
@@ -235,13 +231,17 @@ secondLoginBtn.addEventListener("click", () => {
 
   //Calculate current date and time
   const now = new Date();
-  const year = now.getFullYear();
-  const month = `${now.getMonth() + 1}`.padStart(2, 0);
-  const day = `${now.getDate()}`.padStart(2, 0);
-  const hour = `${now.getHours()}`.padStart(2, 0);
-  const min = `${now.getMinutes()}`.padStart(2, 0);
-  lableDate.textContent = `${year}/${month}/${day}`;
-  lableTime.textContent = `, ${hour}:${min}`;
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  };
+  const formatedDate = Intl.DateTimeFormat(currentAcc.locale, options).format(
+    now
+  );
+  lableDate.textContent = formatedDate;
 
   if (currentAcc?.pin === Number(inputPass.value)) {
     inputUser.value = inputPass.value = "";
