@@ -54,7 +54,7 @@ const account3 = {
   ],
   interestRate: 0.7,
   pin: 3333,
-  currency: "USD",
+  currency: "IRR",
   locale: "fa-IR",
 };
 
@@ -130,6 +130,13 @@ const calcDisplayMovDays = function (date, locale) {
   }
 };
 
+const formattedCurrency = function (value, locale, currency) {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: currency,
+  }).format(value);
+};
+
 const displayMovements = function (acc, sort = false) {
   movementsContainer.innerHTML = "";
   const movs = sort
@@ -142,6 +149,8 @@ const displayMovements = function (acc, sort = false) {
     const movTime = new Date(acc.movementsDates[i]);
     const displayMovTime = calcDisplayMovDays(movTime, acc.locale);
 
+    const formattedMov = formattedCurrency(mov, acc.locale, acc.currency);
+
     const html = `
       <div class="left-history-content">
           <div class="his-content-left">
@@ -151,7 +160,7 @@ const displayMovements = function (acc, sort = false) {
             </p>
             <p class="his-date">${displayMovTime}</p>
           </div>
-          <p class="n-money">${mov.toFixed(2)}€</p>
+          <p class="n-money">${formattedMov}</p>
       </div>
     `;
     movementsContainer.insertAdjacentHTML("afterbegin", html);
@@ -160,7 +169,11 @@ const displayMovements = function (acc, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((temp, mov) => (temp += mov), 0);
-  totalBalance.textContent = `${acc.balance.toFixed(2)} €`;
+  totalBalance.textContent = `${formattedCurrency(
+    acc.balance,
+    acc.locale,
+    acc.currency
+  )}`;
 };
 
 const calcDisplaySummary = function (acc) {
@@ -175,9 +188,17 @@ const calcDisplaySummary = function (acc) {
     .map((deposit) => (deposit * acc.interestRate) / 100)
     .filter((int) => int >= 1)
     .reduce((temp, int) => (temp += int), 0);
-  lableIncome.textContent = `${income.toFixed(2)}€`;
-  lableOut.textContent = `${out.toFixed(2)}€`;
-  lableInterest.textContent = `${interest.toFixed(2)}€`;
+  lableIncome.textContent = `${formattedCurrency(
+    income,
+    acc.locale,
+    acc.currency
+  )}`;
+  lableOut.textContent = `${formattedCurrency(out, acc.locale, acc.currency)}`;
+  lableInterest.textContent = `${formattedCurrency(
+    interest,
+    acc.locale,
+    acc.currency
+  )}`;
 };
 
 const accUsernames = function (accs) {
@@ -238,10 +259,10 @@ secondLoginBtn.addEventListener("click", () => {
     hour: "numeric",
     minute: "numeric",
   };
-  const formatedDate = Intl.DateTimeFormat(currentAcc.locale, options).format(
+  const formattedDate = Intl.DateTimeFormat(currentAcc.locale, options).format(
     now
   );
-  lableDate.textContent = formatedDate;
+  lableDate.textContent = formattedDate;
 
   if (currentAcc?.pin === Number(inputPass.value)) {
     inputUser.value = inputPass.value = "";
@@ -281,7 +302,11 @@ requestBtn.addEventListener("click", (e) => {
   const amount = Math.floor(reqInputAmount.value);
   const loanRole = currentAcc.movements.some((mov) => mov >= amount * 0.1);
   if (amount > 0 && loanRole) {
-    const msg = `Requested loan \" ${amount}€ \" Accepted!`;
+    const msg = `Requested loan \" ${formattedCurrency(
+      amount,
+      currentAcc.locale,
+      currentAcc.currency
+    )} \" Accepted!`;
     displayMsg(reqLoanError, msg, "green"); //(4th parametr)Default text-shadow is WHITE
     currentAcc.movements.push(amount);
     currentAcc.movementsDates.push(new Date().toISOString());
