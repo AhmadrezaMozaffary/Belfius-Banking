@@ -4,6 +4,16 @@
 const account1 = {
   owner: "Ahmadreza Mozaffary",
   movements: [200, 450, -400, 3000, -650, -130, 70, 1300],
+  movementsDates: [
+    "2019-11-18T21:31:17.178Z",
+    "2019-12-23T07:42:02.383Z",
+    "2020-01-28T09:15:04.904Z",
+    "2020-04-01T10:17:24.185Z",
+    "2020-05-08T14:11:59.604Z",
+    "2020-05-27T17:01:17.194Z",
+    "2020-07-11T23:36:17.929Z",
+    "2020-07-12T10:51:36.790Z",
+  ],
   interestRate: 1.2, // %
   pin: 1111,
 };
@@ -11,6 +21,16 @@ const account1 = {
 const account2 = {
   owner: "Mohammad Alavi",
   movements: [5000, 3400, -150, -790, -3210, -1000, 8500, -30],
+  movementsDates: [
+    "2019-11-01T13:15:33.035Z",
+    "2019-11-30T09:48:16.867Z",
+    "2019-12-25T06:04:23.907Z",
+    "2020-01-25T14:18:46.235Z",
+    "2020-02-05T16:33:06.386Z",
+    "2020-04-10T14:43:26.374Z",
+    "2020-06-25T18:49:59.371Z",
+    "2020-07-26T12:01:20.894Z",
+  ],
   interestRate: 1.5,
   pin: 2222,
 };
@@ -18,6 +38,16 @@ const account2 = {
 const account3 = {
   owner: "Bijan mahdavi Tehrani",
   movements: [200, -200, 340, -300, -20, 50, 400, -460],
+  movementsDates: [
+    "2019-11-01T13:15:33.035Z",
+    "2019-11-30T09:48:16.867Z",
+    "2019-12-25T06:04:23.907Z",
+    "2020-01-25T14:18:46.235Z",
+    "2020-02-05T16:33:06.386Z",
+    "2020-04-10T14:43:26.374Z",
+    "2020-06-25T18:49:59.371Z",
+    "2020-07-26T12:01:20.894Z",
+  ],
   interestRate: 0.7,
   pin: 3333,
 };
@@ -25,6 +55,16 @@ const account3 = {
 const account4 = {
   owner: "Sara Nori",
   movements: [430, 1000, 700, 50, 90],
+  movementsDates: [
+    "2019-11-18T21:31:17.178Z",
+    "2019-12-23T07:42:02.383Z",
+    "2020-01-28T09:15:04.904Z",
+    "2020-04-01T10:17:24.185Z",
+    "2020-05-08T14:11:59.604Z",
+    "2020-05-27T17:01:17.194Z",
+    "2020-07-11T23:36:17.929Z",
+    "2020-07-12T10:51:36.790Z",
+  ],
   interestRate: 1,
   pin: 4444,
 };
@@ -50,6 +90,9 @@ const userPanel = document.querySelector(".panel");
 const btnContainer = document.querySelector(".btn-container");
 const logoutBtn = document.querySelector(".logout-btn");
 
+const lableDate = document.querySelector(".date");
+const lableTime = document.querySelector(".time");
+
 const inputID = document.querySelector(".input-id");
 const transferInputAmount = document.querySelector(".transfer-input-amount");
 const transferBtn = document.querySelector(".btn-tools");
@@ -71,11 +114,21 @@ const lableOut = document.querySelector(".out");
 const lableInterest = document.querySelector(".interest");
 const sortBtn = document.querySelector(".sort-btn");
 
-const displayMovements = function (movements, sort = false) {
+const displayMovements = function (acc, sort = false) {
   movementsContainer.innerHTML = "";
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
   movs.forEach((mov, i) => {
     const type = mov > 0 ? "deposit" : "withdraw";
+
+    //Display movement's date
+    const movTime = new Date(acc.movementsDates[i]);
+    const year = movTime.getFullYear();
+    const month = `${movTime.getMonth() + 1}`.padStart(2, 0);
+    const day = `${movTime.getDate()}`.padStart(2, 0);
+    const displayMovTime = `${year}/${month}/${day}`;
+
     const html = `
       <div class="left-history-content">
           <div class="his-content-left">
@@ -83,7 +136,7 @@ const displayMovements = function (movements, sort = false) {
               <span class="his-num">${i + 1}</span>
               <span class="kind-of-his ${type}">${type}</span>
             </p>
-            <p class="his-date">"DATE"</p>
+            <p class="his-date">${displayMovTime}</p>
           </div>
           <p class="n-money">${mov.toFixed(2)}€</p>
       </div>
@@ -126,7 +179,7 @@ const accUsernames = function (accs) {
 accUsernames(accounts);
 
 const updateUI = function (acc) {
-  displayMovements(acc.movements);
+  displayMovements(acc);
   calcDisplayBalance(acc);
   calcDisplaySummary(acc);
 };
@@ -162,6 +215,17 @@ secondLoginBtn.addEventListener("click", () => {
   currentAcc = accounts.find(
     (acc) => acc.username === inputUser.value.toLowerCase()
   );
+
+  //Calculate current date and time
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = `${now.getMonth() + 1}`.padStart(2, 0);
+  const day = `${now.getDate()}`.padStart(2, 0);
+  const hour = `${now.getHours()}`.padStart(2, 0);
+  const min = `${now.getMinutes()}`.padStart(2, 0);
+  lableDate.textContent = `${year}/${month}/${day}`;
+  lableTime.textContent = `, ${hour}:${min}`;
+
   if (currentAcc?.pin === Number(inputPass.value)) {
     inputUser.value = inputPass.value = "";
     loginPage.classList.add("hidden");
@@ -187,6 +251,8 @@ transferBtn.addEventListener("click", (e) => {
   ) {
     currentAcc.movements.push(-amount);
     reciverAcc.movements.push(amount);
+    currentAcc.movementsDates.push(new Date().toISOString());
+    reciverAcc.movementsDates.push(new Date().toISOString());
     updateUI(currentAcc);
   } else {
     alert("Wrong information!");
@@ -201,6 +267,7 @@ requestBtn.addEventListener("click", (e) => {
     const msg = `Requested loan \" ${amount}€ \" Accepted!`;
     displayMsg(reqLoanError, msg, "green"); //(4th parametr)Default text-shadow is WHITE
     currentAcc.movements.push(amount);
+    currentAcc.movementsDates.push(new Date().toISOString());
     updateUI(currentAcc);
   } else if (!loanRole) {
     const msg = "Requested loan is grater than 10%!";
@@ -234,7 +301,7 @@ logoutBtn.addEventListener("click", (e) => {
 let sorted = false;
 sortBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  displayMovements(currentAcc.movements, !sorted);
+  displayMovements(currentAcc, !sorted);
   sorted = !sorted;
   if (sorted) {
     sortBtn.style.color = "green";
