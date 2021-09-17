@@ -9,13 +9,15 @@ const account1 = {
     "2019-12-23T07:42:02.383Z",
     "2020-01-28T09:15:04.904Z",
     "2020-04-01T10:17:24.185Z",
-    "2020-05-08T14:11:59.604Z",
-    "2020-05-27T17:01:17.194Z",
-    "2020-07-11T23:36:17.929Z",
-    "2020-07-12T10:51:36.790Z",
+    "2021-09-10T14:11:59.604Z",
+    "2021-09-13T17:01:17.194Z",
+    "2021-09-15T23:36:17.929Z",
+    "2021-09-16T10:51:36.790Z",
   ],
   interestRate: 1.2, // %
   pin: 1111,
+  currency: "EUR",
+  locale: "fa-IR",
 };
 
 const account2 = {
@@ -33,6 +35,8 @@ const account2 = {
   ],
   interestRate: 1.5,
   pin: 2222,
+  currency: "EUR",
+  locale: "pt-PT",
 };
 
 const account3 = {
@@ -50,6 +54,8 @@ const account3 = {
   ],
   interestRate: 0.7,
   pin: 3333,
+  currency: "USD",
+  locale: "en-US",
 };
 
 const account4 = {
@@ -64,6 +70,8 @@ const account4 = {
   ],
   interestRate: 1,
   pin: 4444,
+  currency: "USD",
+  locale: "de-DE",
 };
 
 const accounts = [account1, account2, account3, account4];
@@ -111,6 +119,21 @@ const lableOut = document.querySelector(".out");
 const lableInterest = document.querySelector(".interest");
 const sortBtn = document.querySelector(".sort-btn");
 
+const calcDisplayMovDays = function (date) {
+  const calcPassedDays = (day1, day2) =>
+    Math.round(Math.abs(day1 - day2) / (1000 * 60 * 60 * 24));
+  const passedDays = calcPassedDays(new Date(), date);
+  if (passedDays === 0) return "Today";
+  else if (passedDays === 1) return "Yesterday";
+  else if (passedDays <= 7) return `${passedDays} days ago`;
+  else {
+    const year = date.getFullYear();
+    const month = `${date.getMonth() + 1}`.padStart(2, 0);
+    const day = `${date.getDate()}`.padStart(2, 0);
+    return `${year}/${month}/${day}`;
+  }
+};
+
 const displayMovements = function (acc, sort = false) {
   movementsContainer.innerHTML = "";
   const movs = sort
@@ -121,10 +144,7 @@ const displayMovements = function (acc, sort = false) {
 
     //Display movement's date
     const movTime = new Date(acc.movementsDates[i]);
-    const year = movTime.getFullYear();
-    const month = `${movTime.getMonth() + 1}`.padStart(2, 0);
-    const day = `${movTime.getDate()}`.padStart(2, 0);
-    const displayMovTime = `${year}/${month}/${day}`;
+    const displayMovTime = calcDisplayMovDays(movTime);
 
     const html = `
       <div class="left-history-content">
