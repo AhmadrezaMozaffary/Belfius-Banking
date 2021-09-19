@@ -221,7 +221,7 @@ const updateUI = function (acc) {
 };
 
 const logoutTimer = function () {
-  let time = 50; // In SEC
+  let time = 10 * 60; // In SEC (10m)
   const tick = function () {
     const min = String(Math.trunc(time / 60)).padStart(2, 0);
     const sec = String(time % 60).padStart(2, 0);
