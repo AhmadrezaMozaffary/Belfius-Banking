@@ -301,25 +301,27 @@ requestBtn.addEventListener("click", (e) => {
   e.preventDefault();
   const amount = Math.floor(reqInputAmount.value);
   const loanRole = currentAcc.movements.some((mov) => mov >= amount * 0.1);
-  if (amount > 0 && loanRole) {
-    const msg = `Requested loan \" ${formattedCurrency(
-      amount,
-      currentAcc.locale,
-      currentAcc.currency
-    )} \" Accepted!`;
-    displayMsg(reqLoanError, msg, "green"); //(4th parametr)Default text-shadow is WHITE
-    currentAcc.movements.push(amount);
-    currentAcc.movementsDates.push(new Date().toISOString());
-    updateUI(currentAcc);
-  } else if (!loanRole) {
-    const msg = "Requested loan is grater than 10%!";
-    displayMsg(reqLoanError, msg, "red", "yellow");
-    updateUI(currentAcc);
-  } else if (amount <= 0) {
-    const msg = "Enter your amount";
-    displayMsg(reqLoanError, msg, "red", "yellow");
-    updateUI(currentAcc);
-  }
+  const checkLoan = function () {
+    if (amount > 0 && loanRole) {
+      const msg = `Requested loan \" ${formattedCurrency(
+        amount,
+        currentAcc.locale,
+        currentAcc.currency
+      )} \" Accepted!`;
+      displayMsg(reqLoanError, msg, "green"); //(4th argument)Default text-shadow is WHITE
+      currentAcc.movements.push(amount);
+      currentAcc.movementsDates.push(new Date().toISOString());
+      updateUI(currentAcc);
+    } else if (!loanRole) {
+      const msg = "Requested loan is grater than 10%!";
+      displayMsg(reqLoanError, msg, "red", "yellow");
+      updateUI(currentAcc);
+    } else if (amount <= 0) {
+      updateUI(currentAcc);
+    }
+  };
+  setTimeout(checkLoan, 2500);
+
   reqInputAmount.value = "";
 });
 
