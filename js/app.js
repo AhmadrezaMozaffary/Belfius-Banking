@@ -118,6 +118,8 @@ const lableOut = document.querySelector(".out");
 const lableInterest = document.querySelector(".interest");
 const sortBtn = document.querySelector(".sort-btn");
 
+const lableTimer = document.querySelector(".timer");
+
 const calcDisplayMovDays = function (date, locale) {
   const calcPassedDays = (day1, day2) =>
     Math.round(Math.abs(day1 - day2) / (1000 * 60 * 60 * 24));
@@ -218,6 +220,28 @@ const updateUI = function (acc) {
   calcDisplaySummary(acc);
 };
 
+const logoutTimer = function () {
+  let time = 50; // In SEC
+  const tick = function () {
+    const min = String(Math.trunc(time / 60)).padStart(2, 0);
+    const sec = String(time % 60).padStart(2, 0);
+
+    if (time === 0) {
+      clearInterval(timer);
+    }
+
+    time--;
+
+    lableTimer.textContent = `${min} : ${sec}`;
+  };
+
+  tick();
+
+  const timer = setInterval(tick, 1000);
+
+  return timer;
+};
+
 const displayMsg = function (target, msg, msgColor, shadowColor = "white") {
   target.style.color = msgColor;
   target.style.textShadow = `0 0 2px ${shadowColor}`;
@@ -244,7 +268,7 @@ firstSignupBtn.addEventListener("click", () => {
   loginMessage.textContent = "Sign up ";
 });
 
-let currentAcc;
+let currentAcc, timer;
 secondLoginBtn.addEventListener("click", () => {
   currentAcc = accounts.find(
     (acc) => acc.username === inputUser.value.toLowerCase()
@@ -269,6 +293,11 @@ secondLoginBtn.addEventListener("click", () => {
     loginPage.classList.add("hidden");
     userPanel.classList.remove("hidden");
     usersName.textContent = `${currentAcc.owner.split(" ")[0]} 😊`;
+
+    //TIMER on login
+    if (timer) clearInterval(timer);
+    timer = logoutTimer();
+
     updateUI(currentAcc);
   } else {
     inputUser.value = inputPass.value = "";
@@ -292,6 +321,10 @@ transferBtn.addEventListener("click", (e) => {
     currentAcc.movementsDates.push(new Date().toISOString());
     reciverAcc.movementsDates.push(new Date().toISOString());
     updateUI(currentAcc);
+
+    //RESET timer
+    clearInterval(timer);
+    timer = logoutTimer();
   } else {
     alert("Wrong information!");
   }
@@ -319,6 +352,10 @@ requestBtn.addEventListener("click", (e) => {
     } else if (amount <= 0) {
       updateUI(currentAcc);
     }
+
+    //RESET timer
+    clearInterval(timer);
+    timer = logoutTimer();
   };
   setTimeout(checkLoan, 2500);
 
