@@ -16,9 +16,7 @@ What is this about
 * ...
 
 
-## Demo
-
-[Netlify](https://frontend-belfius.netlify.app/)
+## [Demo](https://frontend-belfius.netlify.app/)
 
 ## USERNAMEs and PASSWORDs for test
 
